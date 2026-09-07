@@ -98,6 +98,10 @@ def test_invalid_year_format():
     with pytest.raises(ValueError):
         year_holidays("20XX")  # 잘못된 연도 형식
 
+def test_invalid_date_type():
+    with pytest.raises(TypeError):
+        is_holiday(20240101)
+
 
 # 9. 비공휴일 확인 테스트
 @pytest.mark.parametrize("date_str", [
