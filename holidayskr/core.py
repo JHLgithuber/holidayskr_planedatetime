@@ -1,5 +1,6 @@
 import requests
 from datetime import datetime, date, timedelta
+from typing import Union
 from korean_lunar_calendar import KoreanLunarCalendar
 
 
@@ -59,19 +60,19 @@ def get_holidays(year):
     return all_holidays
 
 
-def is_holiday(date_str_dt : str | datetime | date):
+def is_holiday(date_input: Union[str, datetime, date]):
     """지정된 날짜가 공휴일인지 확인합니다."""
-    if isinstance(date_str_dt, str):
+    if isinstance(date_input, str):
         try:
-            date_obj = datetime.strptime(date_str_dt, '%Y-%m-%d').date()
-        except ValueError:
-            raise ValueError("Invalid date format. Use 'YYYY-MM-DD'.")
-    elif isinstance(date_str_dt, datetime):
-        date_obj = date_str_dt.date()
-    elif isinstance(date_str_dt, date):
-        date_obj = date_str_dt
+            date_obj = datetime.strptime(date_input, '%Y-%m-%d').date()
+        except ValueError as exc:
+            raise ValueError("Invalid date format. Use 'YYYY-MM-DD'.") from exc
+    elif isinstance(date_input, datetime):
+        date_obj = date_input.date()
+    elif isinstance(date_input, date):
+        date_obj = date_input
     else:
-        raise TypeError("date_str must be a string or datetime or date object")
+        raise TypeError("date_input must be a str, datetime, or date object")
 
     year = date_obj.year
     all_holidays = get_holidays(year)
